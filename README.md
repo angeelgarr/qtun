@@ -4,6 +4,9 @@ A secure tunnel over quic.
 
 [![Travis](https://travis-ci.com/net-byte/qtun.svg?branch=master)](https://github.com/net-byte/qtun)
 [![Go Report Card](https://goreportcard.com/badge/github.com/net-byte/qtun)](https://goreportcard.com/report/github.com/net-byte/qtun)
+![image](https://img.shields.io/badge/License-MIT-orange)
+![image](https://img.shields.io/badge/License-Anti--996-red)
+
 # Usage  
 
 ```

@@ -1,6 +1,8 @@
 # qtun
 
-A secure tunnel over quic.
+A secure tunnel over quic.  
+
+[![Travis](https://travis-ci.com/net-byte/qtun.svg?branch=master)](https://github.com/net-byte/qtun)
 
 # Usage  
 

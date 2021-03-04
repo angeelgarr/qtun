@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
-	"qtun/util"
 
 	qConn "github.com/marten-seemann/quic-conn"
+	"github.com/net-byte/qtun/util"
 )
 
 //Start the client

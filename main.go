@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
-	"qtun/client"
-	"qtun/server"
-	"qtun/util"
+
+	"github.com/net-byte/qtun/client"
+	"github.com/net-byte/qtun/server"
+	"github.com/net-byte/qtun/util"
 )
 
 func main() {

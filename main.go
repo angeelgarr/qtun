@@ -4,12 +4,12 @@ import (
 	"flag"
 
 	"github.com/net-byte/qtun/client"
+	"github.com/net-byte/qtun/config"
 	"github.com/net-byte/qtun/server"
-	"github.com/net-byte/qtun/util"
 )
 
 func main() {
-	config := util.Config{}
+	config := config.Config{}
 	flag.StringVar(&config.From, "from", "127.0.0.1:1987", "From address")
 	flag.StringVar(&config.To, "to", "127.0.0.1:1080", "To address")
 	flag.StringVar(&config.ClientKey, "ck", "../certs/client.key", "Client key")

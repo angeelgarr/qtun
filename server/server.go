@@ -10,11 +10,11 @@ import (
 	"time"
 
 	qConn "github.com/marten-seemann/quic-conn"
-	"github.com/net-byte/qtun/util"
+	"github.com/net-byte/qtun/config"
 )
 
 // Start the server
-func Start(config util.Config) {
+func Start(config config.Config) {
 	log.Printf("Proxy from %s to %s", config.From, config.To)
 	tlsConf, err := getTLSConfig(config)
 	if err != nil {
@@ -35,7 +35,7 @@ func Start(config util.Config) {
 	}
 }
 
-func handleConn(fromConn net.Conn, config util.Config) {
+func handleConn(fromConn net.Conn, config config.Config) {
 	// Connect the dest server
 	toConn, err := net.DialTimeout("tcp", config.To, time.Duration(config.Timeout)*time.Second)
 	if err != nil {
@@ -57,7 +57,7 @@ func copy(destination io.WriteCloser, source io.ReadCloser) {
 	io.Copy(destination, source)
 }
 
-func getTLSConfig(config util.Config) (*tls.Config, error) {
+func getTLSConfig(config config.Config) (*tls.Config, error) {
 	cert, err := tls.LoadX509KeyPair(config.ServerPem, config.ServerKey)
 	if err != nil {
 		return nil, err

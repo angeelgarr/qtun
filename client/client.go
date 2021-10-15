@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"io"
@@ -8,11 +9,11 @@ import (
 	"log"
 	"net"
 
-	qConn "github.com/marten-seemann/quic-conn"
+	"github.com/lucas-clemente/quic-go"
 	"github.com/net-byte/qtun/config"
 )
 
-//Start the client
+//Start the proxy client
 func Start(config config.Config) {
 	log.Printf("Proxy from %s to %s", config.From, config.To)
 	l, err := net.Listen("tcp", config.From)
@@ -28,18 +29,24 @@ func Start(config config.Config) {
 	}
 }
 
-func handleConn(fromConn net.Conn, config config.Config) {
+func handleConn(conn net.Conn, config config.Config) {
 	tlsConf, err := getTLSConfig(config)
 	if err != nil {
 		panic(err)
 	}
-	toConn, err := qConn.Dial(config.To, tlsConf)
+	session, err := quic.DialAddr(config.To, tlsConf, nil)
 	if err != nil {
-		log.Printf("quic conn error:%s", err)
+		log.Println(err)
 		return
 	}
-	go copy(toConn, fromConn)
-	go copy(fromConn, toConn)
+	stream, err := session.OpenStreamSync(context.Background())
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	go copy(stream, conn)
+	go copy(conn, stream)
 }
 
 func copy(destination io.WriteCloser, source io.ReadCloser) {

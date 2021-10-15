@@ -38,7 +38,7 @@ docker run -d --name qtun-client -p 1987:1987 netbyte/qtun -from=:1987 -to=SERVE
 
 ### Run server    
 ```
-docker run -d --name qtun-server -p 1988:1988/udp netbyte/qtun -s -from=:1988 -to=DST_IP:DST_PORT -ck=/app/certs/client.key -cp=/app/certs/client.pem -sk=/app/certs/server.key -sp=/app/certs/server.pem
+docker run -d --name qtun-server -p 1988:1988/udp netbyte/qtun -S -from=:1988 -to=DST_IP:DST_PORT -ck=/app/certs/client.key -cp=/app/certs/client.pem -sk=/app/certs/server.key -sp=/app/certs/server.pem
 ```
 
 ## Setting on linux

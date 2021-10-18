@@ -19,12 +19,11 @@ func Start(config config.Config) {
 	log.Printf("Proxy from %s to %s", config.From, config.To)
 	tlsConf, err := getTLSConfig(config)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	l, err := quic.ListenAddr(config.From, tlsConf, nil)
 	if err != nil {
-		log.Println(err)
-		return
+		log.Panic(err)
 	}
 	for {
 		session, err := l.Accept(context.Background())

@@ -16,6 +16,10 @@ import (
 //Start the proxy client
 func Start(config config.Config) {
 	log.Printf("Proxy from %s to %s", config.From, config.To)
+	tlsConf, err := getTLSConfig(config)
+	if err != nil {
+		log.Panic(err)
+	}
 	l, err := net.Listen("tcp", config.From)
 	if err != nil {
 		log.Panic(err)
@@ -23,17 +27,13 @@ func Start(config config.Config) {
 	for {
 		conn, err := l.Accept()
 		if err != nil {
-			log.Println(err)
+			continue
 		}
-		go handleConn(conn, config)
+		go handleConn(conn, config, tlsConf)
 	}
 }
 
-func handleConn(conn net.Conn, config config.Config) {
-	tlsConf, err := getTLSConfig(config)
-	if err != nil {
-		panic(err)
-	}
+func handleConn(conn net.Conn, config config.Config, tlsConf *tls.Config) {
 	session, err := quic.DialAddr(config.To, tlsConf, nil)
 	if err != nil {
 		log.Println(err)

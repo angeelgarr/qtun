@@ -1,6 +1,6 @@
 # qtun
 
-A tcp proxy over quic.  
+A tcp/udp proxy over quic.  
 
 [![Travis](https://travis-ci.com/net-byte/qtun.svg?branch=master)](https://github.com/net-byte/qtun)
 [![Go Report Card](https://goreportcard.com/badge/github.com/net-byte/qtun)](https://goreportcard.com/report/github.com/net-byte/qtun)
@@ -13,6 +13,7 @@ A tcp proxy over quic.
 ```
 Usage of ./qtun:
   -S    server mode
+  -U    udp mode
   -ck string
         client key file path (default "../certs/client.key")
   -cp string

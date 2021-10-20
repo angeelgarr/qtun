@@ -21,11 +21,20 @@ func main() {
 	flag.StringVar(&config.ServerPem, "sp", "../certs/server.pem", "server pem file path")
 	flag.IntVar(&config.Timeout, "t", 30, "connection timeout in seconds")
 	flag.BoolVar(&config.ServerMode, "S", false, "server mode")
+	flag.BoolVar(&config.UDPMode, "U", false, "udp mode")
 
 	flag.Parse()
 	if config.ServerMode {
-		server.Start(config)
+		if config.UDPMode {
+			server.StartUDP(config)
+		} else {
+			server.StartTCP(config)
+		}
 	} else {
-		client.Start(config)
+		if config.UDPMode {
+			client.StartUDP(config)
+		} else {
+			client.StartTCP(config)
+		}
 	}
 }

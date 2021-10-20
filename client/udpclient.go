@@ -15,7 +15,7 @@ var _sessionMap sync.Map
 
 //Start udp proxy client
 func StartUDP(config config.Config) {
-	log.Printf("Proxy from %s to %s", config.From, config.To)
+	log.Printf("udp proxy from %s to %s", config.From, config.To)
 	tlsConf, err := common.GetClientTLSConfig(config)
 	if err != nil {
 		log.Panic(err)

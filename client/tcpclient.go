@@ -13,7 +13,7 @@ import (
 
 //Start tcp proxy client
 func StartTCP(config config.Config) {
-	log.Printf("Proxy from %s to %s", config.From, config.To)
+	log.Printf("tcp proxy from %s to %s", config.From, config.To)
 	tlsConf, err := common.GetClientTLSConfig(config)
 	if err != nil {
 		log.Panic(err)

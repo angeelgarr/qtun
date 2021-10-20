@@ -13,7 +13,11 @@ import (
 
 // Start proxy server
 func Start(config config.Config) {
-	log.Printf("Proxy from %s to %s", config.From, config.To)
+	network := "tcp"
+	if config.UDPMode {
+		network = "udp"
+	}
+	log.Printf("%s proxy from %s to %s", network, config.From, config.To)
 	tlsConf, err := common.GetServerTLSConfig(config)
 	if err != nil {
 		log.Panic(err)
@@ -32,15 +36,11 @@ func Start(config config.Config) {
 			log.Println(err)
 			continue
 		}
-		go handleConn(stream, config)
+		go handleConn(network, stream, config)
 	}
 }
 
-func handleConn(stream quic.Stream, config config.Config) {
-	network := "tcp"
-	if config.UDPMode {
-		network = "udp"
-	}
+func handleConn(network string, stream quic.Stream, config config.Config) {
 	conn, err := net.DialTimeout(network, config.To, time.Duration(config.Timeout)*time.Second)
 	if err != nil {
 		log.Println(err)

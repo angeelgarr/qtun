@@ -9,5 +9,5 @@ type Config struct {
 	ServerPem  string
 	Timeout    int
 	ServerMode bool
-        UDPMode    bool
+	UDPMode    bool
 }

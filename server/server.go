@@ -11,8 +11,8 @@ import (
 	"github.com/net-byte/qtun/config"
 )
 
-// Start udp proxy server
-func StartUDP(config config.Config) {
+// Start proxy server
+func Start(config config.Config) {
 	log.Printf("Proxy from %s to %s", config.From, config.To)
 	tlsConf, err := common.GetServerTLSConfig(config)
 	if err != nil {
@@ -37,7 +37,11 @@ func StartUDP(config config.Config) {
 }
 
 func handleConn(stream quic.Stream, config config.Config) {
-	conn, err := net.DialTimeout("udp", config.To, time.Duration(config.Timeout)*time.Second)
+	network := "tcp"
+	if config.UDPMode {
+		network = "udp"
+	}
+	conn, err := net.DialTimeout(network, config.To, time.Duration(config.Timeout)*time.Second)
 	if err != nil {
 		log.Println(err)
 		return

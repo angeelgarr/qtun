@@ -25,11 +25,7 @@ func main() {
 
 	flag.Parse()
 	if config.ServerMode {
-		if config.UDPMode {
-			server.StartUDP(config)
-		} else {
-			server.StartTCP(config)
-		}
+		server.Start(config)
 	} else {
 		if config.UDPMode {
 			client.StartUDP(config)

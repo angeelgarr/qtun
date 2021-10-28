@@ -37,6 +37,7 @@ func handleTCP(conn net.Conn, config config.Config, tlsConf *tls.Config) {
 		log.Println(err)
 		return
 	}
+	defer session.CloseWithError(0, "bye")
 	stream, err := session.OpenStreamSync(context.Background())
 	if err != nil {
 		log.Println(err)
@@ -44,5 +45,5 @@ func handleTCP(conn net.Conn, config config.Config, tlsConf *tls.Config) {
 	}
 
 	go common.Copy(stream, conn)
-	go common.Copy(conn, stream)
+	common.Copy(conn, stream)
 }

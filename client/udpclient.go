@@ -52,13 +52,14 @@ func StartUDP(config config.Config) {
 			log.Println(err)
 			continue
 		}
-		go toClient(stream, conn, cliAddr)
+		go toClient(_session, stream, conn, cliAddr)
 		stream.Write(buf[:n])
 	}
 }
 
-func toClient(stream quic.Stream, conn *net.UDPConn, cliAddr *net.UDPAddr) {
+func toClient(session quic.Session, stream quic.Stream, conn *net.UDPConn, cliAddr *net.UDPAddr) {
 	defer stream.Close()
+	defer session.CloseWithError(0, "bye")
 	buf := make([]byte, 4096)
 	for {
 		n, err := stream.Read(buf)

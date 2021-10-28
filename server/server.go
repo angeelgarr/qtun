@@ -31,16 +31,17 @@ func Start(config config.Config) {
 		if err != nil {
 			continue
 		}
-		stream, err := session.AcceptStream(context.Background())
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-		go handleConn(network, stream, config)
+		go handleConn(network, session, config)
 	}
 }
 
-func handleConn(network string, stream quic.Stream, config config.Config) {
+func handleConn(network string, session quic.Session, config config.Config) {
+	defer session.CloseWithError(0, "bye")
+	stream, err := session.AcceptStream(context.Background())
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	conn, err := net.DialTimeout(network, config.To, time.Duration(config.Timeout)*time.Second)
 	if err != nil {
 		log.Println(err)
@@ -48,5 +49,5 @@ func handleConn(network string, stream quic.Stream, config config.Config) {
 	}
 
 	go common.Copy(conn, stream)
-	go common.Copy(stream, conn)
+	common.Copy(stream, conn)
 }
